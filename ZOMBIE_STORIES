@@ -248,3 +248,48 @@ TitleLabel.TextSize = 20  -- Kích thước chữ
 TitleLabel.TextXAlignment = Enum.TextXAlignment.Center  -- Căn giữa theo chiều ngang
 TitleLabel.TextYAlignment = Enum.TextYAlignment.Center  -- Căn giữa theo chiều dọc
 TitleLabel.Parent = Frame
+
+--cross
+local Players = game:GetService("Players")
+local UserInputService = game:GetService("UserInputService")
+
+local player = Players.LocalPlayer
+
+-- Tạo GUI cho cross
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = player:WaitForChild("PlayerGui")
+
+-- Tạo thanh ngang của cross
+local horizontalBar = Instance.new("Frame")
+horizontalBar.Size = UDim2.new(0, 12, 0, 2) -- Dài 12px, cao 2px
+horizontalBar.AnchorPoint = Vector2.new(0.5, 0.5)
+horizontalBar.BackgroundColor3 = Color3.fromRGB(0, 255, 0) -- Màu xanh lá
+horizontalBar.BorderSizePixel = 0
+horizontalBar.Parent = screenGui
+
+-- Tạo thanh dọc của cross
+local verticalBar = Instance.new("Frame")
+verticalBar.Size = UDim2.new(0, 2, 0, 12) -- Dài 12px, rộng 2px
+verticalBar.AnchorPoint = Vector2.new(0.5, 0.5)
+verticalBar.BackgroundColor3 = Color3.fromRGB(0, 255, 0) -- Màu xanh lá
+verticalBar.BorderSizePixel = 0
+verticalBar.Parent = screenGui
+
+-- Cập nhật vị trí cross dựa trên con trỏ chuột
+local function updateCrosshairPosition()
+    local mousePosition = UserInputService:GetMouseLocation() -- Vị trí chuột (màn hình)
+    local adjustedPosition = Vector2.new(mousePosition.X, mousePosition.Y - 58) -- Trừ 36 để bù thanh công cụ Roblox
+
+    horizontalBar.Position = UDim2.new(0, adjustedPosition.X, 0, adjustedPosition.Y)
+    verticalBar.Position = UDim2.new(0, adjustedPosition.X, 0, adjustedPosition.Y)
+end
+
+-- Lắng nghe sự kiện chuột di chuyển
+UserInputService.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement then
+        updateCrosshairPosition()
+    end
+end)
+
+-- Đảm bảo cross luôn đúng vị trí khi khởi động
+updateCrosshairPosition()
