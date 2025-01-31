@@ -1,0 +1,300 @@
+game.StarterGui:SetCore("SendNotification", {
+    Title = "Created by HAPPY script";
+    Text = "Zombie stories🧟 GUI";
+    Duration = 7;
+})
+
+local player = game.Players.LocalPlayer
+local camera = workspace.CurrentCamera
+local UserInputService = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
+
+-- GUI
+local ScreenGui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+ScreenGui.ResetOnSpawn = false
+
+local Frame = Instance.new("Frame")
+Frame.Size = UDim2.new(0, 300, 0, 300)
+Frame.Position = UDim2.new(0.5, -150, 0.4, -75)
+Frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+Frame.BorderSizePixel = 2
+Frame.Parent = ScreenGui
+Frame.Draggable = true
+Frame.Active = true
+
+-- Close Button
+local CloseButton = Instance.new("TextButton")
+CloseButton.Size = UDim2.new(0.1, 0, 0.095, 0)
+CloseButton.Position = UDim2.new(0.9, 0, 0, 0)
+CloseButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+CloseButton.Text = "X"
+CloseButton.TextColor3 = Color3.new(1, 1, 1)
+CloseButton.Font = Enum.Font.SourceSansBold
+CloseButton.TextSize = 14
+CloseButton.Parent = Frame
+
+CloseButton.MouseButton1Click:Connect(function()
+    ScreenGui:Destroy()
+end)
+
+-- Aimbot Zombie Toggle
+local aimbotEnabled = false
+local ToggleButton = Instance.new("TextButton")
+ToggleButton.Size = UDim2.new(0.4, 0, 0.1, 0)
+ToggleButton.Position = UDim2.new(0.05, 0, 0.2, 0)
+ToggleButton.BackgroundColor3 = Color3.new(0.6, 0, 0)
+ToggleButton.Text = "Aimbot: OFF"
+ToggleButton.TextColor3 = Color3.new(1, 1, 1)
+ToggleButton.Font = Enum.Font.SourceSansBold
+ToggleButton.TextSize = 16
+ToggleButton.Parent = Frame
+
+ToggleButton.MouseButton1Click:Connect(function()
+    aimbotEnabled = not aimbotEnabled
+    ToggleButton.Text = aimbotEnabled and "Aimbot: ON" or "Aimbot: OFF"
+    ToggleButton.BackgroundColor3 = aimbotEnabled and Color3.new(0, 0.6, 0) or Color3.new(0.6, 0, 0)
+end)
+
+-- Keybind Selection
+local selectedKey = Enum.KeyCode.F
+local isSelectingKey = false
+
+local KeyButton = Instance.new("TextButton")
+KeyButton.Size = UDim2.new(0.4, 0, 0.1, 0)
+KeyButton.Position = UDim2.new(0.55, 0, 0.2, 0)
+KeyButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+KeyButton.Text = "Key: F"
+KeyButton.TextColor3 = Color3.new(1, 1, 1)
+KeyButton.Font = Enum.Font.SourceSansBold
+KeyButton.TextSize = 16
+KeyButton.Parent = Frame
+
+KeyButton.MouseButton1Click:Connect(function()
+    KeyButton.Text = "Press a key..."
+    isSelectingKey = true
+end)
+
+UserInputService.InputBegan:Connect(function(input)
+    if isSelectingKey and input.UserInputType == Enum.UserInputType.Keyboard then
+        selectedKey = input.KeyCode
+        KeyButton.Text = "Key: " .. tostring(selectedKey):gsub("Enum.KeyCode.", "")
+        isSelectingKey = false
+    end
+end)
+
+-- Aimbot Logic
+local function GetClosestZombieHead()
+    local closestZombie = nil
+    local closestDist = math.huge
+    local screenCenter = Vector2.new(camera.ViewportSize.X / 2, camera.ViewportSize.Y / 2)
+    local maxRadius = 200
+    
+    for _, zombie in pairs(workspace.Zombies:GetChildren()) do
+        if zombie:FindFirstChild("Head") then
+            local screenPos, onScreen = camera:WorldToViewportPoint(zombie.Head.Position)
+            if onScreen then
+                local distance = (Vector2.new(screenPos.X, screenPos.Y) - screenCenter).magnitude
+                if distance < closestDist and distance <= maxRadius then
+                    closestDist = distance
+                    closestZombie = zombie
+                end
+            end
+        end
+    end
+    return closestZombie
+end
+
+local function AimAtZombieHead()
+    if not aimbotEnabled then return end
+    
+    local target = GetClosestZombieHead()
+    if target and target:FindFirstChild("Head") then
+        camera.CFrame = CFrame.new(camera.CFrame.Position, target.Head.Position)
+    end
+end
+
+UserInputService.InputBegan:Connect(function(input)
+    if input.KeyCode == selectedKey then
+        RunService:BindToRenderStep("Aimbot", Enum.RenderPriority.Camera.Value, AimAtZombieHead)
+    end
+end)
+
+UserInputService.InputEnded:Connect(function(input)
+    if input.KeyCode == selectedKey then
+        RunService:UnbindFromRenderStep("Aimbot")
+    end
+end)
+
+--speed
+-- Khai báo biến
+local speedEnabled = false
+local savedSpeed = 16 -- Tốc độ mặc định trong server
+local runService = game:GetService("RunService")
+local humanoid = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+
+-- Tạo nút bật/tắt speed
+local SpeedToggleButton = Instance.new("TextButton")
+SpeedToggleButton.Size = UDim2.new(0.2, 0, 0.15, 0)
+SpeedToggleButton.Position = UDim2.new(0.05, 0, 0.35, 0)
+SpeedToggleButton.BackgroundColor3 = Color3.new(0.6, 0, 0)
+SpeedToggleButton.Text = "Speed: OFF"
+SpeedToggleButton.TextColor3 = Color3.new(1, 1, 1)
+SpeedToggleButton.Font = Enum.Font.SourceSansBold
+SpeedToggleButton.TextSize = 18
+SpeedToggleButton.Parent = Frame
+
+-- Hộp nhập tốc độ
+local SpeedInput = Instance.new("TextBox")
+SpeedInput.Size = UDim2.new(0.4, 0, 0.15, 0)
+SpeedInput.Position = UDim2.new(0.3, 0, 0.35, 0)
+SpeedInput.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
+SpeedInput.TextColor3 = Color3.new(1, 1, 1)
+SpeedInput.Font = Enum.Font.SourceSansBold
+SpeedInput.TextSize = 18
+SpeedInput.Text = tostring(savedSpeed)
+SpeedInput.Parent = Frame
+
+-- Nút Save tốc độ
+local SaveSpeedButton = Instance.new("TextButton")
+SaveSpeedButton.Size = UDim2.new(0.2, 0, 0.15, 0)
+SaveSpeedButton.Position = UDim2.new(0.75, 0, 0.35, 0)
+SaveSpeedButton.BackgroundColor3 = Color3.new(0.2, 0.5, 0.8)
+SaveSpeedButton.Text = "Save"
+SaveSpeedButton.TextColor3 = Color3.new(1, 1, 1)
+SaveSpeedButton.Font = Enum.Font.SourceSansBold
+SaveSpeedButton.TextSize = 18
+SaveSpeedButton.Parent = Frame
+
+-- Xử lý lưu tốc độ
+SaveSpeedButton.MouseButton1Click:Connect(function()
+    local inputSpeed = tonumber(SpeedInput.Text)
+    if inputSpeed and inputSpeed > 0 then
+        savedSpeed = inputSpeed
+    else
+        SpeedInput.Text = tostring(savedSpeed) -- Khôi phục giá trị hợp lệ
+    end
+end)
+
+-- Xử lý bật/tắt Speed
+SpeedToggleButton.MouseButton1Click:Connect(function()
+    speedEnabled = not speedEnabled
+    if speedEnabled then
+        SpeedToggleButton.Text = "Speed: ON"
+        SpeedToggleButton.BackgroundColor3 = Color3.new(0, 0.6, 0)
+    else
+        SpeedToggleButton.Text = "Speed: OFF"
+        SpeedToggleButton.BackgroundColor3 = Color3.new(0.6, 0, 0)
+        if humanoid then
+            humanoid.WalkSpeed = 16 -- Reset tốc độ về mặc định của game
+        end
+    end
+end)
+
+-- Liên tục cập nhật tốc độ khi bật Speed
+runService.RenderStepped:Connect(function()
+    if speedEnabled and humanoid then
+        humanoid.WalkSpeed = savedSpeed
+    end
+end)
+
+--ifnjump
+-- Khai báo biến
+local infiniteJumpEnabled = false
+local userInputService = game:GetService("UserInputService")
+
+-- Tạo nút bật/tắt Infinite Jump
+local InfiniteJumpButton = Instance.new("TextButton")
+InfiniteJumpButton.Size = UDim2.new(0.35, 0, 0.1, 0)
+InfiniteJumpButton.Position = UDim2.new(0.05, 0, 0.55, 0) -- Đặt dưới chức năng Speed
+InfiniteJumpButton.BackgroundColor3 = Color3.new(0.6, 0, 0)
+InfiniteJumpButton.Text = "Ifn Jump: OFF"
+InfiniteJumpButton.TextColor3 = Color3.new(1, 1, 1)
+InfiniteJumpButton.Font = Enum.Font.SourceSansBold
+InfiniteJumpButton.TextSize = 18
+InfiniteJumpButton.Parent = Frame
+
+-- Xử lý bật/tắt Infinite Jump
+InfiniteJumpButton.MouseButton1Click:Connect(function()
+    infiniteJumpEnabled = not infiniteJumpEnabled
+    if infiniteJumpEnabled then
+        InfiniteJumpButton.Text = "Ifn Jump: ON"
+        InfiniteJumpButton.BackgroundColor3 = Color3.new(0, 0.6, 0)
+    else
+        InfiniteJumpButton.Text = "Ifn Jump: OFF"
+        InfiniteJumpButton.BackgroundColor3 = Color3.new(0.6, 0, 0)
+    end
+end)
+
+-- Lắng nghe sự kiện nhấn phím để kích hoạt nhảy vô hạn
+userInputService.JumpRequest:Connect(function()
+    if infiniteJumpEnabled then
+        local player = game.Players.LocalPlayer
+        if player.Character and player.Character:FindFirstChildOfClass("Humanoid") then
+            player.Character:FindFirstChildOfClass("Humanoid"):ChangeState(Enum.HumanoidStateType.Jumping)
+        end
+    end
+end)
+
+--noclip
+-- Khai báo biến
+local noclipEnabled = false
+local runService = game:GetService("RunService")
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+
+-- Tạo nút bật/tắt No Clip
+local NoClipButton = Instance.new("TextButton")
+NoClipButton.Size = UDim2.new(0.35, 0, 0.1, 0)
+NoClipButton.Position = UDim2.new(0.05, 0, 0.7, 0) -- Đặt dưới chức năng Infinite Jump
+NoClipButton.BackgroundColor3 = Color3.new(0.6, 0, 0)
+NoClipButton.Text = "No Clip: OFF"
+NoClipButton.TextColor3 = Color3.new(1, 1, 1)
+NoClipButton.Font = Enum.Font.SourceSansBold
+NoClipButton.TextSize = 18
+NoClipButton.Parent = Frame
+
+-- Hàm bật/tắt No Clip
+local function toggleNoClip()
+    noclipEnabled = not noclipEnabled
+    if noclipEnabled then
+        NoClipButton.Text = "No Clip: ON"
+        NoClipButton.BackgroundColor3 = Color3.new(0, 0.6, 0)
+
+        -- Bắt đầu vòng lặp No Clip
+        while noclipEnabled do
+            for _, part in pairs(character:GetDescendants()) do
+                if part:IsA("BasePart") and part.CanCollide then
+                    part.CanCollide = false
+                end
+            end
+            runService.Stepped:Wait()
+        end
+    else
+        NoClipButton.Text = "No Clip: OFF"
+        NoClipButton.BackgroundColor3 = Color3.new(0.6, 0, 0)
+
+        -- Khi tắt, đặt lại va chạm của nhân vật
+        for _, part in pairs(character:GetDescendants()) do
+            if part:IsA("BasePart") then
+                part.CanCollide = true
+            end
+        end
+    end
+end
+
+-- Kết nối sự kiện bấm nút
+NoClipButton.MouseButton1Click:Connect(toggleNoClip)
+
+--title
+-- Title Label
+local TitleLabel = Instance.new("TextLabel")
+TitleLabel.Size = UDim2.new(0.9, 0, 0.1, 0)  -- Chiếm toàn bộ chiều rộng của menu
+TitleLabel.Position = UDim2.new(0, 0, 0, 0)  -- Đặt ở phần đầu của menu
+TitleLabel.BackgroundColor3 = Color3.fromRGB(50, 50, 50)  -- Màu nền cho title
+TitleLabel.Text = "Zombie stories"  -- Tiêu đề menu
+TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)  -- Màu chữ trắng
+TitleLabel.Font = Enum.Font.SourceSansBold  -- Font chữ đậm
+TitleLabel.TextSize = 20  -- Kích thước chữ
+TitleLabel.TextXAlignment = Enum.TextXAlignment.Center  -- Căn giữa theo chiều ngang
+TitleLabel.TextYAlignment = Enum.TextYAlignment.Center  -- Căn giữa theo chiều dọc
+TitleLabel.Parent = Frame
