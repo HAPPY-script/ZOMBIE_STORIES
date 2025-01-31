@@ -14,7 +14,7 @@ local ScreenGui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
 ScreenGui.ResetOnSpawn = false
 
 local Frame = Instance.new("Frame")
-Frame.Size = UDim2.new(0, 300, 0, 300)
+Frame.Size = UDim2.new(0, 300, 0, 250)
 Frame.Position = UDim2.new(0.5, -150, 0.4, -75)
 Frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 Frame.BorderSizePixel = 2
@@ -40,7 +40,7 @@ end)
 -- Aimbot Zombie Toggle
 local aimbotEnabled = false
 local ToggleButton = Instance.new("TextButton")
-ToggleButton.Size = UDim2.new(0.4, 0, 0.1, 0)
+ToggleButton.Size = UDim2.new(0.4, 0, 0.15, 0)
 ToggleButton.Position = UDim2.new(0.05, 0, 0.2, 0)
 ToggleButton.BackgroundColor3 = Color3.new(0.6, 0, 0)
 ToggleButton.Text = "Aimbot: OFF"
@@ -60,7 +60,7 @@ local selectedKey = Enum.KeyCode.F
 local isSelectingKey = false
 
 local KeyButton = Instance.new("TextButton")
-KeyButton.Size = UDim2.new(0.4, 0, 0.1, 0)
+KeyButton.Size = UDim2.new(0.4, 0, 0.15, 0)
 KeyButton.Position = UDim2.new(0.55, 0, 0.2, 0)
 KeyButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
 KeyButton.Text = "Key: F"
@@ -135,7 +135,7 @@ local humanoid = game.Players.LocalPlayer.Character and game.Players.LocalPlayer
 -- Tạo nút bật/tắt speed
 local SpeedToggleButton = Instance.new("TextButton")
 SpeedToggleButton.Size = UDim2.new(0.2, 0, 0.15, 0)
-SpeedToggleButton.Position = UDim2.new(0.05, 0, 0.35, 0)
+SpeedToggleButton.Position = UDim2.new(0.05, 0, 0.4, 0)
 SpeedToggleButton.BackgroundColor3 = Color3.new(0.6, 0, 0)
 SpeedToggleButton.Text = "Speed: OFF"
 SpeedToggleButton.TextColor3 = Color3.new(1, 1, 1)
@@ -146,7 +146,7 @@ SpeedToggleButton.Parent = Frame
 -- Hộp nhập tốc độ
 local SpeedInput = Instance.new("TextBox")
 SpeedInput.Size = UDim2.new(0.4, 0, 0.15, 0)
-SpeedInput.Position = UDim2.new(0.3, 0, 0.35, 0)
+SpeedInput.Position = UDim2.new(0.3, 0, 0.4, 0)
 SpeedInput.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
 SpeedInput.TextColor3 = Color3.new(1, 1, 1)
 SpeedInput.Font = Enum.Font.SourceSansBold
@@ -157,7 +157,7 @@ SpeedInput.Parent = Frame
 -- Nút Save tốc độ
 local SaveSpeedButton = Instance.new("TextButton")
 SaveSpeedButton.Size = UDim2.new(0.2, 0, 0.15, 0)
-SaveSpeedButton.Position = UDim2.new(0.75, 0, 0.35, 0)
+SaveSpeedButton.Position = UDim2.new(0.75, 0, 0.4, 0)
 SaveSpeedButton.BackgroundColor3 = Color3.new(0.2, 0.5, 0.8)
 SaveSpeedButton.Text = "Save"
 SaveSpeedButton.TextColor3 = Color3.new(1, 1, 1)
@@ -204,8 +204,8 @@ local userInputService = game:GetService("UserInputService")
 
 -- Tạo nút bật/tắt Infinite Jump
 local InfiniteJumpButton = Instance.new("TextButton")
-InfiniteJumpButton.Size = UDim2.new(0.35, 0, 0.1, 0)
-InfiniteJumpButton.Position = UDim2.new(0.05, 0, 0.55, 0) -- Đặt dưới chức năng Speed
+InfiniteJumpButton.Size = UDim2.new(0.35, 0, 0.15, 0)
+InfiniteJumpButton.Position = UDim2.new(0.05, 0, 0.6, 0) -- Đặt dưới chức năng Speed
 InfiniteJumpButton.BackgroundColor3 = Color3.new(0.6, 0, 0)
 InfiniteJumpButton.Text = "Ifn Jump: OFF"
 InfiniteJumpButton.TextColor3 = Color3.new(1, 1, 1)
@@ -234,56 +234,6 @@ userInputService.JumpRequest:Connect(function()
         end
     end
 end)
-
---noclip
--- Khai báo biến
-local noclipEnabled = false
-local runService = game:GetService("RunService")
-local player = game.Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-
--- Tạo nút bật/tắt No Clip
-local NoClipButton = Instance.new("TextButton")
-NoClipButton.Size = UDim2.new(0.35, 0, 0.1, 0)
-NoClipButton.Position = UDim2.new(0.05, 0, 0.7, 0) -- Đặt dưới chức năng Infinite Jump
-NoClipButton.BackgroundColor3 = Color3.new(0.6, 0, 0)
-NoClipButton.Text = "No Clip: OFF"
-NoClipButton.TextColor3 = Color3.new(1, 1, 1)
-NoClipButton.Font = Enum.Font.SourceSansBold
-NoClipButton.TextSize = 18
-NoClipButton.Parent = Frame
-
--- Hàm bật/tắt No Clip
-local function toggleNoClip()
-    noclipEnabled = not noclipEnabled
-    if noclipEnabled then
-        NoClipButton.Text = "No Clip: ON"
-        NoClipButton.BackgroundColor3 = Color3.new(0, 0.6, 0)
-
-        -- Bắt đầu vòng lặp No Clip
-        while noclipEnabled do
-            for _, part in pairs(character:GetDescendants()) do
-                if part:IsA("BasePart") and part.CanCollide then
-                    part.CanCollide = false
-                end
-            end
-            runService.Stepped:Wait()
-        end
-    else
-        NoClipButton.Text = "No Clip: OFF"
-        NoClipButton.BackgroundColor3 = Color3.new(0.6, 0, 0)
-
-        -- Khi tắt, đặt lại va chạm của nhân vật
-        for _, part in pairs(character:GetDescendants()) do
-            if part:IsA("BasePart") then
-                part.CanCollide = true
-            end
-        end
-    end
-end
-
--- Kết nối sự kiện bấm nút
-NoClipButton.MouseButton1Click:Connect(toggleNoClip)
 
 --title
 -- Title Label
