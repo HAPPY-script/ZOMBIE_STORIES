@@ -1,327 +1,547 @@
 game.StarterGui:SetCore("SendNotification", {
     Title = "Created by HAPPY script";
-    Text = "Zombie stories🧟 GUI";
+    Text = "Zombie stories🧟";
     Duration = 7;
 })
 
-local player = game.Players.LocalPlayer
-local camera = workspace.CurrentCamera
+local ZombieStoriesScript = Instance.new("ScreenGui")
+ZombieStoriesScript.Name = "ZombieStoriesScript"
+ZombieStoriesScript.ResetOnSpawn = false
+ZombieStoriesScript.DisplayOrder = 9999
+ZombieStoriesScript.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+local Main = Instance.new("Frame")
+Main.Name = "Main"
+Main.Position = UDim2.new(0.5, 0, 0.5, 0)
+Main.Size = UDim2.new(0.5, 0, 0.5, 0)
+Main.BackgroundColor3 = Color3.new(0.301961, 0.329412, 0.509804)
+Main.BorderSizePixel = 0
+Main.BorderColor3 = Color3.new(0, 0, 0)
+Main.Visible = false
+Main.ZIndex = 9998
+Main.AnchorPoint = Vector2.new(0.5, 0.5)
+Main.Parent = ZombieStoriesScript
+
+local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint.Name = "UIAspectRatioConstraint"
+UIAspectRatioConstraint.AspectRatio = 1.75
+UIAspectRatioConstraint.Parent = Main
+
+local UIDragDetector = Instance.new("UIDragDetector")
+UIDragDetector.Name = "UIDragDetector"
+
+UIDragDetector.Parent = Main
+
+local UICorner = Instance.new("UICorner")
+UICorner.Name = "UICorner"
+UICorner.CornerRadius = UDim.new(0.05, 0)
+UICorner.Parent = Main
+
+local UIGradient = Instance.new("UIGradient")
+UIGradient.Name = "UIGradient"
+UIGradient.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(0.72549, 1, 0.607843)), ColorSequenceKeypoint.new(1, Color3.new(0.784314, 0, 1))})
+UIGradient.Rotation = -45
+UIGradient.Parent = Main
+
+local UIStroke = Instance.new("UIStroke")
+UIStroke.Name = "UIStroke"
+UIStroke.Color = Color3.new(1, 1, 1)
+UIStroke.Thickness = 2
+UIStroke.Transparency = 0.5
+UIStroke.Parent = Main
+
+local Aimbot = Instance.new("TextButton")
+Aimbot.Name = "Aimbot"
+Aimbot.Position = UDim2.new(0.415, 0, 0.725, 0)
+Aimbot.Size = UDim2.new(0.2, 0, 0.15, 0)
+Aimbot.BackgroundColor3 = Color3.new(1, 0.196078, 0.196078)
+Aimbot.BorderSizePixel = 0
+Aimbot.BorderColor3 = Color3.new(0, 0, 0)
+Aimbot.ZIndex = 9999
+Aimbot.Text = "OFF"
+Aimbot.TextColor3 = Color3.new(1, 1, 1)
+Aimbot.TextSize = 14
+Aimbot.FontFace = Font.new("rbxassetid://12187360881", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+Aimbot.TextScaled = true
+Aimbot.TextWrapped = true
+Aimbot.Parent = Main
+
+local UICorner2 = Instance.new("UICorner")
+UICorner2.Name = "UICorner"
+UICorner2.CornerRadius = UDim.new(0.1, 0)
+UICorner2.Parent = Aimbot
+
+local Title = Instance.new("ImageLabel")
+Title.Name = "Title"
+Title.Position = UDim2.new(0.525, 0, 0.15, 0)
+Title.Size = UDim2.new(0.45, 0, 0.375, 0)
+Title.BackgroundColor3 = Color3.new(1, 1, 1)
+Title.BackgroundTransparency = 1
+Title.BorderSizePixel = 0
+Title.BorderColor3 = Color3.new(0, 0, 0)
+Title.ZIndex = 9999
+Title.AnchorPoint = Vector2.new(0.5, 0.5)
+Title.Transparency = 1
+Title.Image = "rbxassetid://96781088301393"
+Title.Parent = Main
+
+local Zombie = Instance.new("ImageLabel")
+Zombie.Name = "Zombie"
+Zombie.Position = UDim2.new(0.425, 0, 0.4, 0)
+Zombie.Size = UDim2.new(0.3, 0, 0.3, 0)
+Zombie.BackgroundColor3 = Color3.new(1, 1, 1)
+Zombie.BackgroundTransparency = 1
+Zombie.BorderSizePixel = 0
+Zombie.BorderColor3 = Color3.new(0, 0, 0)
+Zombie.ZIndex = 9999
+Zombie.Transparency = 1
+Zombie.Image = "rbxassetid://71697485431443"
+Zombie.Parent = Main
+
+local UIAspectRatioConstraint2 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint2.Name = "UIAspectRatioConstraint"
+
+UIAspectRatioConstraint2.Parent = Zombie
+
+local dot = Instance.new("ImageLabel")
+dot.Name = "dot"
+dot.Position = UDim2.new(0.5, 0, 0.225, 0)
+dot.Size = UDim2.new(0.9, 0, 0.9, 0)
+dot.BackgroundColor3 = Color3.new(1, 1, 1)
+dot.BackgroundTransparency = 1
+dot.BorderSizePixel = 0
+dot.BorderColor3 = Color3.new(0, 0, 0)
+dot.ZIndex = 9999
+dot.Rotation = 15
+dot.AnchorPoint = Vector2.new(0.5, 0.5)
+dot.Transparency = 1
+dot.Image = "rbxassetid://70602807270911"
+dot.Parent = Zombie
+
+local SpeedPlayer = Instance.new("ImageLabel")
+SpeedPlayer.Name = "SpeedPlayer"
+SpeedPlayer.Position = UDim2.new(0.025, 0, 0.15, 0)
+SpeedPlayer.Size = UDim2.new(0.4, 0, 0.4, 0)
+SpeedPlayer.BackgroundColor3 = Color3.new(1, 1, 1)
+SpeedPlayer.BackgroundTransparency = 1
+SpeedPlayer.BorderSizePixel = 0
+SpeedPlayer.BorderColor3 = Color3.new(0, 0, 0)
+SpeedPlayer.ZIndex = 9999
+SpeedPlayer.Transparency = 1
+SpeedPlayer.Image = "rbxassetid://112279145639007"
+SpeedPlayer.Parent = Main
+
+local UIAspectRatioConstraint3 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint3.Name = "UIAspectRatioConstraint"
+
+UIAspectRatioConstraint3.Parent = SpeedPlayer
+
+local Speed = Instance.new("TextButton")
+Speed.Name = "Speed"
+Speed.Position = UDim2.new(0.04, 0, 0.5, 0)
+Speed.Size = UDim2.new(0.2, 0, 0.15, 0)
+Speed.BackgroundColor3 = Color3.new(1, 0.196078, 0.196078)
+Speed.BorderSizePixel = 0
+Speed.BorderColor3 = Color3.new(0, 0, 0)
+Speed.ZIndex = 9999
+Speed.Text = "OFF"
+Speed.TextColor3 = Color3.new(1, 1, 1)
+Speed.TextSize = 14
+Speed.FontFace = Font.new("rbxassetid://12187360881", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+Speed.TextScaled = true
+Speed.TextWrapped = true
+Speed.Parent = Main
+
+local UICorner3 = Instance.new("UICorner")
+UICorner3.Name = "UICorner"
+UICorner3.CornerRadius = UDim.new(0.1, 0)
+UICorner3.Parent = Speed
+
+local TextBox = Instance.new("TextBox")
+TextBox.Name = "TextBox"
+TextBox.Position = UDim2.new(0.5, 0, 1.55, 0)
+TextBox.Size = UDim2.new(0.85, 0, 1, 0)
+TextBox.BackgroundColor3 = Color3.new(0.717647, 0, 0.862745)
+TextBox.BackgroundTransparency = 0.75
+TextBox.BorderSizePixel = 0
+TextBox.BorderColor3 = Color3.new(0, 0, 0)
+TextBox.ZIndex = 9999
+TextBox.AnchorPoint = Vector2.new(0.5, 0.5)
+TextBox.Transparency = 0.75
+TextBox.Text = ""
+TextBox.TextColor3 = Color3.new(0.784314, 0, 1)
+TextBox.TextSize = 14
+TextBox.FontFace = Font.new("rbxassetid://12187360881", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+TextBox.TextScaled = true
+TextBox.TextWrapped = true
+TextBox.PlaceholderText = "Value"
+TextBox.PlaceholderColor3 = Color3.new(0.784314, 0, 1)
+TextBox.Parent = Speed
+
+local UICorner4 = Instance.new("UICorner")
+UICorner4.Name = "UICorner"
+UICorner4.CornerRadius = UDim.new(0.1, 0)
+UICorner4.Parent = TextBox
+
+local JumpPlayer = Instance.new("ImageLabel")
+JumpPlayer.Name = "JumpPlayer"
+JumpPlayer.Position = UDim2.new(0.75, 0, 0.2, 0)
+JumpPlayer.Size = UDim2.new(0.375, 0, 0.375, 0)
+JumpPlayer.BackgroundColor3 = Color3.new(1, 1, 1)
+JumpPlayer.BackgroundTransparency = 1
+JumpPlayer.BorderSizePixel = 0
+JumpPlayer.BorderColor3 = Color3.new(0, 0, 0)
+JumpPlayer.ZIndex = 9999
+JumpPlayer.Transparency = 1
+JumpPlayer.Image = "rbxassetid://91040894780578"
+JumpPlayer.Parent = Main
+
+local UIAspectRatioConstraint4 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint4.Name = "UIAspectRatioConstraint"
+
+UIAspectRatioConstraint4.Parent = JumpPlayer
+
+local TextLabel = Instance.new("TextLabel")
+TextLabel.Name = "TextLabel"
+TextLabel.Position = UDim2.new(0.6, 0, 0.65, 0)
+TextLabel.Size = UDim2.new(0.5, 0, 0.5, 0)
+TextLabel.BackgroundColor3 = Color3.new(1, 1, 1)
+TextLabel.BackgroundTransparency = 1
+TextLabel.BorderSizePixel = 0
+TextLabel.BorderColor3 = Color3.new(0, 0, 0)
+TextLabel.ZIndex = 9999
+TextLabel.Rotation = -90
+TextLabel.AnchorPoint = Vector2.new(0.5, 0.5)
+TextLabel.Transparency = 1
+TextLabel.Text = "8"
+TextLabel.TextColor3 = Color3.new(1, 1, 1)
+TextLabel.TextSize = 14
+TextLabel.FontFace = Font.new("rbxasset://fonts/families/Ubuntu.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+TextLabel.TextScaled = true
+TextLabel.TextWrapped = true
+TextLabel.Parent = JumpPlayer
+
+local IfnJump = Instance.new("TextButton")
+IfnJump.Name = "IfnJump"
+IfnJump.Position = UDim2.new(0.75, 0, 0.5, 0)
+IfnJump.Size = UDim2.new(0.2, 0, 0.15, 0)
+IfnJump.BackgroundColor3 = Color3.new(1, 0.196078, 0.196078)
+IfnJump.BorderSizePixel = 0
+IfnJump.BorderColor3 = Color3.new(0, 0, 0)
+IfnJump.ZIndex = 9999
+IfnJump.Text = "OFF"
+IfnJump.TextColor3 = Color3.new(1, 1, 1)
+IfnJump.TextSize = 14
+IfnJump.FontFace = Font.new("rbxassetid://12187360881", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+IfnJump.TextScaled = true
+IfnJump.TextWrapped = true
+IfnJump.Parent = Main
+
+local UICorner5 = Instance.new("UICorner")
+UICorner5.Name = "UICorner"
+UICorner5.CornerRadius = UDim.new(0.1, 0)
+UICorner5.Parent = IfnJump
+
+local TextBox2 = Instance.new("TextBox")
+TextBox2.Name = "TextBox"
+TextBox2.Position = UDim2.new(0.5, 0, 1.55, 0)
+TextBox2.Size = UDim2.new(0.85, 0, 1, 0)
+TextBox2.BackgroundColor3 = Color3.new(0.717647, 0, 0.862745)
+TextBox2.BackgroundTransparency = 0.75
+TextBox2.BorderSizePixel = 0
+TextBox2.BorderColor3 = Color3.new(0, 0, 0)
+TextBox2.ZIndex = 9999
+TextBox2.AnchorPoint = Vector2.new(0.5, 0.5)
+TextBox2.Transparency = 0.75
+TextBox2.Text = ""
+TextBox2.TextColor3 = Color3.new(0.784314, 0, 1)
+TextBox2.TextSize = 14
+TextBox2.FontFace = Font.new("rbxassetid://12187360881", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+TextBox2.TextScaled = true
+TextBox2.TextWrapped = true
+TextBox2.PlaceholderText = "Value"
+TextBox2.PlaceholderColor3 = Color3.new(0.784314, 0, 1)
+TextBox2.Parent = IfnJump
+
+local UICorner6 = Instance.new("UICorner")
+UICorner6.Name = "UICorner"
+UICorner6.CornerRadius = UDim.new(0.1, 0)
+UICorner6.Parent = TextBox2
+
+local Button = Instance.new("ImageButton")
+Button.Name = "Button"
+Button.Position = UDim2.new(0.5, 0, 0.5, 0)
+Button.Size = UDim2.new(0.09, 0, 0.09, 0)
+Button.BackgroundColor3 = Color3.new(1, 1, 1)
+Button.BackgroundTransparency = 1
+Button.BorderSizePixel = 0
+Button.BorderColor3 = Color3.new(0, 0, 0)
+Button.ZIndex = 9999
+Button.AnchorPoint = Vector2.new(0.5, 0.5)
+Button.Transparency = 1
+Button.Image = "rbxassetid://121477254315198"
+Button.Parent = ZombieStoriesScript
+
+local UIAspectRatioConstraint5 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint5.Name = "UIAspectRatioConstraint"
+
+UIAspectRatioConstraint5.Parent = Button
+
+local UIDragDetector2 = Instance.new("UIDragDetector")
+UIDragDetector2.Name = "UIDragDetector"
+
+UIDragDetector2.Parent = Button
+
+--====================================================================================================
+
+local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
 
--- GUI
-local ScreenGui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
-ScreenGui.ResetOnSpawn = false
-
-local Frame = Instance.new("Frame")
-Frame.Size = UDim2.new(0, 300, 0, 150)
-Frame.Position = UDim2.new(0.5, -150, 0.4, -75)
-Frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-Frame.BorderSizePixel = 2
-Frame.Parent = ScreenGui
-Frame.Draggable = true
-Frame.Active = true
-
--- Close Button
-local CloseButton = Instance.new("TextButton")
-CloseButton.Size = UDim2.new(0.1, 0, 0.2, 0)
-CloseButton.Position = UDim2.new(0.9, 0, 0, 0)
-CloseButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-CloseButton.Text = "X"
-CloseButton.TextColor3 = Color3.new(1, 1, 1)
-CloseButton.Font = Enum.Font.SourceSansBold
-CloseButton.TextSize = 14
-CloseButton.Parent = Frame
-
-CloseButton.MouseButton1Click:Connect(function()
-    ScreenGui:Destroy()
-end)
-
---speed
--- Khai báo biến
-local speedEnabled = false
-local savedSpeed = 16 -- Tốc độ mặc định trong server
-local runService = game:GetService("RunService")
-local humanoid = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
-
--- Tạo nút bật/tắt speed
-local SpeedToggleButton = Instance.new("TextButton")
-SpeedToggleButton.Size = UDim2.new(0.2, 0, 0.3, 0)
-SpeedToggleButton.Position = UDim2.new(0.05, 0, 0.3, 0)
-SpeedToggleButton.BackgroundColor3 = Color3.new(0.6, 0, 0)
-SpeedToggleButton.Text = "Speed: OFF"
-SpeedToggleButton.TextColor3 = Color3.new(1, 1, 1)
-SpeedToggleButton.Font = Enum.Font.SourceSansBold
-SpeedToggleButton.TextSize = 18
-SpeedToggleButton.Parent = Frame
-
--- Hộp nhập tốc độ
-local SpeedInput = Instance.new("TextBox")
-SpeedInput.Size = UDim2.new(0.4, 0, 0.3, 0)
-SpeedInput.Position = UDim2.new(0.3, 0, 0.3, 0)
-SpeedInput.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
-SpeedInput.TextColor3 = Color3.new(1, 1, 1)
-SpeedInput.Font = Enum.Font.SourceSansBold
-SpeedInput.TextSize = 18
-SpeedInput.Text = tostring(savedSpeed)
-SpeedInput.Parent = Frame
-
--- Nút Save tốc độ
-local SaveSpeedButton = Instance.new("TextButton")
-SaveSpeedButton.Size = UDim2.new(0.2, 0, 0.3, 0)
-SaveSpeedButton.Position = UDim2.new(0.75, 0, 0.3, 0)
-SaveSpeedButton.BackgroundColor3 = Color3.new(0.2, 0.5, 0.8)
-SaveSpeedButton.Text = "Save"
-SaveSpeedButton.TextColor3 = Color3.new(1, 1, 1)
-SaveSpeedButton.Font = Enum.Font.SourceSansBold
-SaveSpeedButton.TextSize = 18
-SaveSpeedButton.Parent = Frame
-
--- Xử lý lưu tốc độ
-SaveSpeedButton.MouseButton1Click:Connect(function()
-    local inputSpeed = tonumber(SpeedInput.Text)
-    if inputSpeed and inputSpeed > 0 then
-        savedSpeed = inputSpeed
-    else
-        SpeedInput.Text = tostring(savedSpeed) -- Khôi phục giá trị hợp lệ
-    end
-end)
-
--- Xử lý bật/tắt Speed
-SpeedToggleButton.MouseButton1Click:Connect(function()
-    speedEnabled = not speedEnabled
-    if speedEnabled then
-        SpeedToggleButton.Text = "Speed: ON"
-        SpeedToggleButton.BackgroundColor3 = Color3.new(0, 0.6, 0)
-    else
-        SpeedToggleButton.Text = "Speed: OFF"
-        SpeedToggleButton.BackgroundColor3 = Color3.new(0.6, 0, 0)
-        if humanoid then
-            humanoid.WalkSpeed = 16 -- Reset tốc độ về mặc định của game
-        end
-    end
-end)
-
--- Liên tục cập nhật tốc độ khi bật Speed
-runService.RenderStepped:Connect(function()
-    if speedEnabled and humanoid then
-        humanoid.WalkSpeed = savedSpeed
-    end
-end)
-
---ifnjump
--- Khai báo biến
-local infiniteJumpEnabled = false
-local userInputService = game:GetService("UserInputService")
-
--- Tạo nút bật/tắt Infinite Jump
-local InfiniteJumpButton = Instance.new("TextButton")
-InfiniteJumpButton.Size = UDim2.new(0.35, 0, 0.3, 0)
-InfiniteJumpButton.Position = UDim2.new(0.05, 0, 0.7, 0) -- Đặt dưới chức năng Speed
-InfiniteJumpButton.BackgroundColor3 = Color3.new(0.6, 0, 0)
-InfiniteJumpButton.Text = "Ifn Jump: OFF"
-InfiniteJumpButton.TextColor3 = Color3.new(1, 1, 1)
-InfiniteJumpButton.Font = Enum.Font.SourceSansBold
-InfiniteJumpButton.TextSize = 18
-InfiniteJumpButton.Parent = Frame
-
--- Xử lý bật/tắt Infinite Jump
-InfiniteJumpButton.MouseButton1Click:Connect(function()
-    infiniteJumpEnabled = not infiniteJumpEnabled
-    if infiniteJumpEnabled then
-        InfiniteJumpButton.Text = "Ifn Jump: ON"
-        InfiniteJumpButton.BackgroundColor3 = Color3.new(0, 0.6, 0)
-    else
-        InfiniteJumpButton.Text = "Ifn Jump: OFF"
-        InfiniteJumpButton.BackgroundColor3 = Color3.new(0.6, 0, 0)
-    end
-end)
-
--- Lắng nghe sự kiện nhấn phím để kích hoạt nhảy vô hạn
-userInputService.JumpRequest:Connect(function()
-    if infiniteJumpEnabled then
-        local player = game.Players.LocalPlayer
-        if player.Character and player.Character:FindFirstChildOfClass("Humanoid") then
-            player.Character:FindFirstChildOfClass("Humanoid"):ChangeState(Enum.HumanoidStateType.Jumping)
-        end
-    end
-end)
-
---title
--- Title Label
-local TitleLabel = Instance.new("TextLabel")
-TitleLabel.Size = UDim2.new(0.9, 0, 0.2, 0)  -- Chiếm toàn bộ chiều rộng của menu
-TitleLabel.Position = UDim2.new(0, 0, 0, 0)  -- Đặt ở phần đầu của menu
-TitleLabel.BackgroundColor3 = Color3.fromRGB(50, 50, 50)  -- Màu nền cho title
-TitleLabel.Text = "Zombie stories"  -- Tiêu đề menu
-TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)  -- Màu chữ trắng
-TitleLabel.Font = Enum.Font.SourceSansBold  -- Font chữ đậm
-TitleLabel.TextSize = 20  -- Kích thước chữ
-TitleLabel.TextXAlignment = Enum.TextXAlignment.Center  -- Căn giữa theo chiều ngang
-TitleLabel.TextYAlignment = Enum.TextYAlignment.Center  -- Căn giữa theo chiều dọc
-TitleLabel.Parent = Frame
-
---aimbot_zombie
 local player = game.Players.LocalPlayer
-local camera = workspace.CurrentCamera
-local userInputService = game:GetService("UserInputService")
-local runService = game:GetService("RunService")
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+local Camera = workspace.CurrentCamera
 
-local ScreenGui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
-ScreenGui.ResetOnSpawn = false
+--------------------------------------------------------
+-- GUI
+--------------------------------------------------------
+local gui = player:WaitForChild("PlayerGui"):WaitForChild("ZombieStoriesScript")
+local main = gui:WaitForChild("Main")
+local toggleButton = gui:WaitForChild("Button")
 
-local Frame = Instance.new("Frame")
-Frame.Size = UDim2.new(0, 200, 0, 120)
-Frame.Position = UDim2.new(0.5, -100, 0.5, -60)
-Frame.BackgroundColor3 = Color3.new(0.1, 0.1, 0.1)
-Frame.BorderSizePixel = 2
-Frame.Parent = ScreenGui
-Frame.Draggable = true
-Frame.Active = true
+local btnAimbot = main:WaitForChild("Aimbot")
+local btnSpeed = main:WaitForChild("Speed")
+local boxSpeed = btnSpeed:WaitForChild("TextBox")
+local btnJump = main:WaitForChild("IfnJump")
+local boxJump = btnJump:WaitForChild("TextBox")
 
-local silentAimEnabled = false
-local selectedKey = Enum.KeyCode.F
-local isKeyHeld = false
-local waitingForKey = false
+--------------------------------------------------------
+-- TWEEN MENU
+--------------------------------------------------------
+local openSize = UDim2.new(0.5, 0, 0.5, 0)
+local closeSize = UDim2.new(0.025, 0, 0.025, 0)
 
-local ToggleButton = Instance.new("TextButton")
-ToggleButton.Size = UDim2.new(0.8, 0, 0.3, 0)
-ToggleButton.Position = UDim2.new(0.1, 0, 0.2, 0)
-ToggleButton.BackgroundColor3 = Color3.new(0.3, 0.6, 0.3)
-ToggleButton.Text = "Silent Aim: OFF"
-ToggleButton.TextColor3 = Color3.new(1, 1, 1)
-ToggleButton.Font = Enum.Font.SourceSansBold
-ToggleButton.TextSize = 18
-ToggleButton.Parent = Frame
+local tweenInfo = TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
 
-local KeybindButton = Instance.new("TextButton")
-KeybindButton.Size = UDim2.new(0.8, 0, 0.3, 0)
-KeybindButton.Position = UDim2.new(0.1, 0, 0.55, 0)
-KeybindButton.BackgroundColor3 = Color3.new(0.2, 0.2, 0.8)
-KeybindButton.Text = "Change Key: F"
-KeybindButton.TextColor3 = Color3.new(1, 1, 1)
-KeybindButton.Font = Enum.Font.SourceSansBold
-KeybindButton.TextSize = 18
-KeybindButton.Parent = Frame
+local menuOpen = false
+local dragStartPos = nil
+local dragging = false
+local clickThreshold = 8
 
-local CloseButton = Instance.new("TextButton")
-CloseButton.Size = UDim2.new(0.2, 0, 0.2, 0)
-CloseButton.Position = UDim2.new(0.8, 0, 0, 0)
-CloseButton.BackgroundColor3 = Color3.new(1, 0, 0)
-CloseButton.Text = "X"
-CloseButton.TextColor3 = Color3.new(1, 1, 1)
-CloseButton.Font = Enum.Font.SourceSansBold
-CloseButton.TextSize = 14
-CloseButton.Parent = Frame
-
-ToggleButton.MouseButton1Click:Connect(function()
-    silentAimEnabled = not silentAimEnabled
-    ToggleButton.Text = silentAimEnabled and "Silent Aim: ON" or "Silent Aim: OFF"
-    ToggleButton.BackgroundColor3 = silentAimEnabled and Color3.new(0, 0.6, 0) or Color3.new(0.6, 0, 0)
-end)
-
-KeybindButton.MouseButton1Click:Connect(function()
-    KeybindButton.Text = "Press a key..."
-    waitingForKey = true
-end)
-
-userInputService.InputBegan:Connect(function(input, gameProcessed)
-    if waitingForKey and input.UserInputType == Enum.UserInputType.Keyboard then
-        selectedKey = input.KeyCode
-        KeybindButton.Text = "Change Key: " .. tostring(selectedKey):gsub("Enum.KeyCode.", "")
-        waitingForKey = false
-    elseif input.KeyCode == selectedKey then
-        isKeyHeld = true
-    end
-end)
-
-userInputService.InputEnded:Connect(function(input)
-    if input.KeyCode == selectedKey then
-        isKeyHeld = false
-    end
-end)
-
-CloseButton.MouseButton1Click:Connect(function()
-    Frame:TweenPosition(UDim2.new(0.5, -100, 1.2, 0), "In", "Quad", 0.5, true, function()
-        ScreenGui:Destroy()
-    end)
-end)
-
-local function GetClosestZombieHeadInRange()
-    local closestZombie = nil
-    local closestScreenDistance = math.huge
-    local crosshairPosition = Vector2.new(camera.ViewportSize.X / 2, camera.ViewportSize.Y / 2)
-    local maxRadius = 200
-
-    for _, zombie in pairs(workspace.Zombies:GetChildren()) do
-        if zombie:FindFirstChild("Head") then
-            local screenPoint, onScreen = camera:WorldToViewportPoint(zombie.Head.Position)
-            if onScreen then
-                local screenPosition = Vector2.new(screenPoint.X, screenPoint.Y)
-                local screenDistance = (screenPosition - crosshairPosition).magnitude
-                if screenDistance < closestScreenDistance and screenDistance <= maxRadius then
-                    closestScreenDistance = screenDistance
-                    closestZombie = zombie
-                end
-            end
-        end
-    end
-    return closestZombie
+local function openMenu()
+	main.Visible = true
+	main.Size = closeSize
+	TweenService:Create(main, tweenInfo, {Size = openSize}):Play()
 end
 
-local function AimAtZombieHead()
-    if not silentAimEnabled or not isKeyHeld then return end
-
-    local targetZombie = GetClosestZombieHeadInRange()
-    if targetZombie and targetZombie:FindFirstChild("Head") then
-        local targetPosition = targetZombie.Head.Position
-        camera.CFrame = CFrame.new(camera.CFrame.Position, targetPosition)
-    end
+local function closeMenu()
+	local tween = TweenService:Create(main, tweenInfo, {Size = closeSize})
+	tween:Play()
+	tween.Completed:Once(function()
+		if not menuOpen then
+			main.Visible = false
+		end
+	end)
 end
 
-runService.RenderStepped:Connect(AimAtZombieHead)
-
---cross
-local Players = game:GetService("Players")
-local UserInputService = game:GetService("UserInputService")
-
-local player = Players.LocalPlayer
-
--- Tạo GUI cho cross
-local screenGui = Instance.new("ScreenGui")
-screenGui.Parent = player:WaitForChild("PlayerGui")
-
--- Tạo thanh ngang của cross
-local horizontalBar = Instance.new("Frame")
-horizontalBar.Size = UDim2.new(0, 12, 0, 2) -- Dài 12px, cao 2px
-horizontalBar.AnchorPoint = Vector2.new(0.5, 0.5)
-horizontalBar.BackgroundColor3 = Color3.fromRGB(0, 255, 0) -- Màu xanh lá
-horizontalBar.BorderSizePixel = 0
-horizontalBar.Parent = screenGui
-
--- Tạo thanh dọc của cross
-local verticalBar = Instance.new("Frame")
-verticalBar.Size = UDim2.new(0, 2, 0, 12) -- Dài 12px, rộng 2px
-verticalBar.AnchorPoint = Vector2.new(0.5, 0.5)
-verticalBar.BackgroundColor3 = Color3.fromRGB(0, 255, 0) -- Màu xanh lá
-verticalBar.BorderSizePixel = 0
-verticalBar.Parent = screenGui
-
--- Cập nhật vị trí cross dựa trên con trỏ chuột
-local function updateCrosshairPosition()
-    local mousePosition = UserInputService:GetMouseLocation() -- Vị trí chuột (màn hình)
-    local adjustedPosition = Vector2.new(mousePosition.X, mousePosition.Y - 58) -- Trừ 36 để bù thanh công cụ Roblox
-
-    horizontalBar.Position = UDim2.new(0, adjustedPosition.X, 0, adjustedPosition.Y)
-    verticalBar.Position = UDim2.new(0, adjustedPosition.X, 0, adjustedPosition.Y)
-end
-
--- Lắng nghe sự kiện chuột di chuyển
-UserInputService.InputChanged:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseMovement then
-        updateCrosshairPosition()
-    end
+toggleButton.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1
+		or input.UserInputType == Enum.UserInputType.Touch then
+		dragStartPos = input.Position
+		dragging = false
+	end
 end)
 
--- Đảm bảo cross luôn đúng vị trí khi khởi động
-updateCrosshairPosition()
+toggleButton.InputChanged:Connect(function(input)
+	if dragStartPos and (
+		input.UserInputType == Enum.UserInputType.MouseMovement
+			or input.UserInputType == Enum.UserInputType.Touch
+		) then
+		local delta = (input.Position - dragStartPos).Magnitude
+		if delta > clickThreshold then
+			dragging = true
+		end
+	end
+end)
+
+toggleButton.InputEnded:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1
+		or input.UserInputType == Enum.UserInputType.Touch then
+
+		if not dragging then
+			menuOpen = not menuOpen
+			if menuOpen then openMenu() else closeMenu() end
+		end
+
+		dragStartPos = nil
+	end
+end)
+
+--------------------------------------------------------
+-- GRADIENT 7 MÀU
+--------------------------------------------------------
+local gradient = main:WaitForChild("UIGradient")
+local fixedColor = Color3.fromRGB(200, 0, 255)
+
+local pastelColors = {
+	Color3.fromRGB(255, 150, 150),
+	Color3.fromRGB(255, 200, 150),
+	Color3.fromRGB(255, 255, 150),
+	Color3.fromRGB(150, 255, 150),
+	Color3.fromRGB(150, 200, 255),
+	Color3.fromRGB(200, 150, 255),
+	Color3.fromRGB(255, 150, 220)
+}
+
+task.spawn(function()
+	local index = 1
+	while true do
+		local fromColor = pastelColors[index]
+		local nextIndex = index + 1
+		if nextIndex > #pastelColors then nextIndex = 1 end
+		local toColor = pastelColors[nextIndex]
+
+		local duration = 0.6
+		local step = 0.03
+		local elapsed = 0
+
+		while elapsed < duration do
+			local t = elapsed / duration
+			local c = fromColor:Lerp(toColor, t)
+			gradient.Color = ColorSequence.new({
+				ColorSequenceKeypoint.new(0, c),
+				ColorSequenceKeypoint.new(1, fixedColor)
+			})
+			task.wait(step)
+			elapsed += step
+		end
+
+		gradient.Color = ColorSequence.new({
+			ColorSequenceKeypoint.new(0, toColor),
+			ColorSequenceKeypoint.new(1, fixedColor)
+		})
+
+		index = nextIndex
+	end
+end)
+
+--------------------------------------------------------
+-- NÚT TRẠNG THÁI: ON / OFF
+--------------------------------------------------------
+local OFF_COLOR = Color3.fromRGB(255, 50, 50)
+local ON_COLOR = Color3.fromRGB(50, 255, 50)
+
+local function SetButtonState(btn, state)
+	if state then
+		btn.BackgroundColor3 = ON_COLOR
+		btn.Text = "ON"
+	else
+		btn.BackgroundColor3 = OFF_COLOR
+		btn.Text = "OFF"
+	end
+end
+
+--------------------------------------------------------
+-- AIMBOT
+--------------------------------------------------------
+local aimbotEnabled = false
+local holdKey = Enum.KeyCode.F
+local keyHeld = false
+
+SetButtonState(btnAimbot, false)
+
+btnAimbot.MouseButton1Click:Connect(function()
+	aimbotEnabled = not aimbotEnabled
+	SetButtonState(btnAimbot, aimbotEnabled)
+end)
+
+UserInputService.InputBegan:Connect(function(input)
+	if input.KeyCode == holdKey then
+		keyHeld = true
+	end
+end)
+
+UserInputService.InputEnded:Connect(function(input)
+	if input.KeyCode == holdKey then
+		keyHeld = false
+	end
+end)
+
+local function getClosestZombie()
+	local best, bestDist = nil, math.huge
+	local center = Vector2.new(Camera.ViewportSize.X/2, Camera.ViewportSize.Y/2)
+
+	for _, z in pairs(workspace:WaitForChild("Zombies"):GetChildren()) do
+		local head = z:FindFirstChild("Head")
+		if head then
+			local p, vis = Camera:WorldToViewportPoint(head.Position)
+			if vis then
+				local dist = (Vector2.new(p.X,p.Y) - center).Magnitude
+				if dist < bestDist and dist <= 200 then
+					bestDist = dist
+					best = head
+				end
+			end
+		end
+	end
+
+	return best
+end
+
+RunService.RenderStepped:Connect(function()
+	if aimbotEnabled and keyHeld then
+		local head = getClosestZombie()
+		if head then
+			Camera.CFrame = CFrame.new(Camera.CFrame.Position, head.Position)
+		end
+	end
+end)
+
+--------------------------------------------------------
+-- SPEED
+--------------------------------------------------------
+local speedEnabled = false
+boxSpeed.Text = tostring(humanoid.WalkSpeed)
+SetButtonState(btnSpeed, false)
+
+btnSpeed.MouseButton1Click:Connect(function()
+	speedEnabled = not speedEnabled
+	SetButtonState(btnSpeed, speedEnabled)
+
+	if not speedEnabled then
+		humanoid.WalkSpeed = 16
+	end
+end)
+
+RunService.RenderStepped:Connect(function()
+	if speedEnabled then
+		local v = tonumber(boxSpeed.Text)
+		if v and v > 0 then
+			humanoid.WalkSpeed = v
+		end
+	end
+end)
+
+--------------------------------------------------------
+-- INFINITE JUMP
+--------------------------------------------------------
+local jumpEnabled = false
+boxJump.Text = tostring(humanoid.JumpPower)
+SetButtonState(btnJump, false)
+
+btnJump.MouseButton1Click:Connect(function()
+	jumpEnabled = not jumpEnabled
+	SetButtonState(btnJump, jumpEnabled)
+end)
+
+UserInputService.JumpRequest:Connect(function()
+	if jumpEnabled then
+		local hum = player.Character and player.Character:FindFirstChild("Humanoid")
+		if hum then
+			local jp = tonumber(boxJump.Text) or 50
+			hum.JumpPower = jp
+			hum:ChangeState(Enum.HumanoidStateType.Jumping)
+		end
+	end
+end)
