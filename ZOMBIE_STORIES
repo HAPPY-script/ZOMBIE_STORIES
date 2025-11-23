@@ -52,7 +52,7 @@ UIStroke.Parent = Main
 
 local Aimbot = Instance.new("TextButton")
 Aimbot.Name = "Aimbot"
-Aimbot.Position = UDim2.new(0.415, 0, 0.725, 0)
+Aimbot.Position = UDim2.new(0.415, 0, 0.675, 0)
 Aimbot.Size = UDim2.new(0.2, 0, 0.15, 0)
 Aimbot.BackgroundColor3 = Color3.new(1, 0.196078, 0.196078)
 Aimbot.BorderSizePixel = 0
@@ -71,6 +71,30 @@ UICorner2.Name = "UICorner"
 UICorner2.CornerRadius = UDim.new(0.1, 0)
 UICorner2.Parent = Aimbot
 
+local TextButton = Instance.new("TextButton")
+TextButton.Name = "TextButton"
+TextButton.Position = UDim2.new(0.5, 0, 1.55, 0)
+TextButton.Size = UDim2.new(0.85, 0, 1, 0)
+TextButton.BackgroundColor3 = Color3.new(0.784314, 0, 1)
+TextButton.BackgroundTransparency = 0.5
+TextButton.BorderSizePixel = 0
+TextButton.BorderColor3 = Color3.new(0, 0, 0)
+TextButton.ZIndex = 9999
+TextButton.AnchorPoint = Vector2.new(0.5, 0.5)
+TextButton.Transparency = 0.5
+TextButton.Text = "F"
+TextButton.TextColor3 = Color3.new(0.784314, 0, 1)
+TextButton.TextSize = 14
+TextButton.FontFace = Font.new("rbxassetid://12187360881", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+TextButton.TextScaled = true
+TextButton.TextWrapped = true
+TextButton.Parent = Aimbot
+
+local UICorner3 = Instance.new("UICorner")
+UICorner3.Name = "UICorner"
+UICorner3.CornerRadius = UDim.new(0.1, 0)
+UICorner3.Parent = TextButton
+
 local Title = Instance.new("ImageLabel")
 Title.Name = "Title"
 Title.Position = UDim2.new(0.525, 0, 0.15, 0)
@@ -87,7 +111,7 @@ Title.Parent = Main
 
 local Zombie = Instance.new("ImageLabel")
 Zombie.Name = "Zombie"
-Zombie.Position = UDim2.new(0.425, 0, 0.4, 0)
+Zombie.Position = UDim2.new(0.425, 0, 0.35, 0)
 Zombie.Size = UDim2.new(0.3, 0, 0.3, 0)
 Zombie.BackgroundColor3 = Color3.new(1, 1, 1)
 Zombie.BackgroundTransparency = 1
@@ -152,10 +176,10 @@ Speed.TextScaled = true
 Speed.TextWrapped = true
 Speed.Parent = Main
 
-local UICorner3 = Instance.new("UICorner")
-UICorner3.Name = "UICorner"
-UICorner3.CornerRadius = UDim.new(0.1, 0)
-UICorner3.Parent = Speed
+local UICorner4 = Instance.new("UICorner")
+UICorner4.Name = "UICorner"
+UICorner4.CornerRadius = UDim.new(0.1, 0)
+UICorner4.Parent = Speed
 
 local TextBox = Instance.new("TextBox")
 TextBox.Name = "TextBox"
@@ -178,10 +202,10 @@ TextBox.PlaceholderText = "Value"
 TextBox.PlaceholderColor3 = Color3.new(0.784314, 0, 1)
 TextBox.Parent = Speed
 
-local UICorner4 = Instance.new("UICorner")
-UICorner4.Name = "UICorner"
-UICorner4.CornerRadius = UDim.new(0.1, 0)
-UICorner4.Parent = TextBox
+local UICorner5 = Instance.new("UICorner")
+UICorner5.Name = "UICorner"
+UICorner5.CornerRadius = UDim.new(0.1, 0)
+UICorner5.Parent = TextBox
 
 local JumpPlayer = Instance.new("ImageLabel")
 JumpPlayer.Name = "JumpPlayer"
@@ -237,10 +261,10 @@ IfnJump.TextScaled = true
 IfnJump.TextWrapped = true
 IfnJump.Parent = Main
 
-local UICorner5 = Instance.new("UICorner")
-UICorner5.Name = "UICorner"
-UICorner5.CornerRadius = UDim.new(0.1, 0)
-UICorner5.Parent = IfnJump
+local UICorner6 = Instance.new("UICorner")
+UICorner6.Name = "UICorner"
+UICorner6.CornerRadius = UDim.new(0.1, 0)
+UICorner6.Parent = IfnJump
 
 local TextBox2 = Instance.new("TextBox")
 TextBox2.Name = "TextBox"
@@ -263,10 +287,10 @@ TextBox2.PlaceholderText = "Value"
 TextBox2.PlaceholderColor3 = Color3.new(0.784314, 0, 1)
 TextBox2.Parent = IfnJump
 
-local UICorner6 = Instance.new("UICorner")
-UICorner6.Name = "UICorner"
-UICorner6.CornerRadius = UDim.new(0.1, 0)
-UICorner6.Parent = TextBox2
+local UICorner7 = Instance.new("UICorner")
+UICorner7.Name = "UICorner"
+UICorner7.CornerRadius = UDim.new(0.1, 0)
+UICorner7.Parent = TextBox2
 
 local Button = Instance.new("ImageButton")
 Button.Name = "Button"
@@ -311,8 +335,11 @@ local main = gui:WaitForChild("Main")
 local toggleButton = gui:WaitForChild("Button")
 
 local btnAimbot = main:WaitForChild("Aimbot")
+local keyButton = btnAimbot:WaitForChild("KeyButton")  -- <-- NÚT CHỌN KEY
+
 local btnSpeed = main:WaitForChild("Speed")
 local boxSpeed = btnSpeed:WaitForChild("TextBox")
+
 local btnJump = main:WaitForChild("IfnJump")
 local boxJump = btnJump:WaitForChild("TextBox")
 
@@ -359,21 +386,17 @@ toggleButton.InputChanged:Connect(function(input)
 			or input.UserInputType == Enum.UserInputType.Touch
 		) then
 		local delta = (input.Position - dragStartPos).Magnitude
-		if delta > clickThreshold then
-			dragging = true
-		end
+		if delta > clickThreshold then dragging = true end
 	end
 end)
 
 toggleButton.InputEnded:Connect(function(input)
 	if input.UserInputType == Enum.UserInputType.MouseButton1
 		or input.UserInputType == Enum.UserInputType.Touch then
-
 		if not dragging then
 			menuOpen = not menuOpen
 			if menuOpen then openMenu() else closeMenu() end
 		end
-
 		dragStartPos = nil
 	end
 end)
@@ -427,7 +450,7 @@ task.spawn(function()
 end)
 
 --------------------------------------------------------
--- NÚT TRẠNG THÁI: ON / OFF
+-- UI BUTTON TOGGLE COLORS
 --------------------------------------------------------
 local OFF_COLOR = Color3.fromRGB(255, 50, 50)
 local ON_COLOR = Color3.fromRGB(50, 255, 50)
@@ -443,27 +466,69 @@ local function SetButtonState(btn, state)
 end
 
 --------------------------------------------------------
--- AIMBOT
+-- AIMBOT + KEY SELECT
 --------------------------------------------------------
 local aimbotEnabled = false
-local holdKey = Enum.KeyCode.F
 local keyHeld = false
 
-SetButtonState(btnAimbot, false)
+local holdKey = Enum.KeyCode.F
+keyButton.Text = "F"  -- mặc định
 
+local selectingKey = false
+
+-- Bật / tắt Aimbot
+SetButtonState(btnAimbot, false)
 btnAimbot.MouseButton1Click:Connect(function()
 	aimbotEnabled = not aimbotEnabled
 	SetButtonState(btnAimbot, aimbotEnabled)
 end)
 
+-- Bấm vào nút đổi key
+keyButton.MouseButton1Click:Connect(function()
+	if selectingKey then
+		selectingKey = false
+		keyButton.Text = holdKey.Name
+	else
+		selectingKey = true
+		keyButton.Text = "..."
+	end
+end)
+
+-- Nhận phím
 UserInputService.InputBegan:Connect(function(input)
-	if input.KeyCode == holdKey then
+	if selectingKey then
+		-- Nhận chuột
+		if input.UserInputType == Enum.UserInputType.MouseButton1 then
+			holdKey = Enum.UserInputType.MouseButton1
+			keyButton.Text = "LMB"
+			selectingKey = false
+			return
+		end
+		if input.UserInputType == Enum.UserInputType.MouseButton2 then
+			holdKey = Enum.UserInputType.MouseButton2
+			keyButton.Text = "RMB"
+			selectingKey = false
+			return
+		end
+
+		-- Nhận phím bàn phím
+		if input.KeyCode ~= Enum.KeyCode.Unknown then
+			holdKey = input.KeyCode
+			keyButton.Text = input.KeyCode.Name
+			selectingKey = false
+		end
+
+		return
+	end
+
+	-- Giữ phím để aimbot hoạt động
+	if input.KeyCode == holdKey or input.UserInputType == holdKey then
 		keyHeld = true
 	end
 end)
 
 UserInputService.InputEnded:Connect(function(input)
-	if input.KeyCode == holdKey then
+	if input.KeyCode == holdKey or input.UserInputType == holdKey then
 		keyHeld = false
 	end
 end)
@@ -477,7 +542,7 @@ local function getClosestZombie()
 		if head then
 			local p, vis = Camera:WorldToViewportPoint(head.Position)
 			if vis then
-				local dist = (Vector2.new(p.X,p.Y) - center).Magnitude
+				local dist = (Vector2.new(p.X, p.Y) - center).Magnitude
 				if dist < bestDist and dist <= 200 then
 					bestDist = dist
 					best = head
@@ -539,8 +604,7 @@ UserInputService.JumpRequest:Connect(function()
 	if jumpEnabled then
 		local hum = player.Character and player.Character:FindFirstChild("Humanoid")
 		if hum then
-			local jp = tonumber(boxJump.Text) or 50
-			hum.JumpPower = jp
+			hum.JumpPower = tonumber(boxJump.Text) or 50
 			hum:ChangeState(Enum.HumanoidStateType.Jumping)
 		end
 	end
