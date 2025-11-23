@@ -72,7 +72,7 @@ UICorner2.CornerRadius = UDim.new(0.1, 0)
 UICorner2.Parent = Aimbot
 
 local TextButton = Instance.new("TextButton")
-TextButton.Name = "TextButton"
+TextButton.Name = "KeyButton"
 TextButton.Position = UDim2.new(0.5, 0, 1.55, 0)
 TextButton.Size = UDim2.new(0.85, 0, 1, 0)
 TextButton.BackgroundColor3 = Color3.new(0.784314, 0, 1)
@@ -335,11 +335,9 @@ local main = gui:WaitForChild("Main")
 local toggleButton = gui:WaitForChild("Button")
 
 local btnAimbot = main:WaitForChild("Aimbot")
-local keyButton = btnAimbot:WaitForChild("KeyButton")  -- <-- NÚT CHỌN KEY
-
+local keyButton = btnAimbot:WaitForChild("KeyButton") -- NÚT CHỌN KEY
 local btnSpeed = main:WaitForChild("Speed")
 local boxSpeed = btnSpeed:WaitForChild("TextBox")
-
 local btnJump = main:WaitForChild("IfnJump")
 local boxJump = btnJump:WaitForChild("TextBox")
 
@@ -386,17 +384,21 @@ toggleButton.InputChanged:Connect(function(input)
 			or input.UserInputType == Enum.UserInputType.Touch
 		) then
 		local delta = (input.Position - dragStartPos).Magnitude
-		if delta > clickThreshold then dragging = true end
+		if delta > clickThreshold then
+			dragging = true
+		end
 	end
 end)
 
 toggleButton.InputEnded:Connect(function(input)
 	if input.UserInputType == Enum.UserInputType.MouseButton1
 		or input.UserInputType == Enum.UserInputType.Touch then
+
 		if not dragging then
 			menuOpen = not menuOpen
 			if menuOpen then openMenu() else closeMenu() end
 		end
+
 		dragStartPos = nil
 	end
 end)
@@ -450,7 +452,7 @@ task.spawn(function()
 end)
 
 --------------------------------------------------------
--- UI BUTTON TOGGLE COLORS
+-- NÚT TRẠNG THÁI: ON / OFF
 --------------------------------------------------------
 local OFF_COLOR = Color3.fromRGB(255, 50, 50)
 local ON_COLOR = Color3.fromRGB(50, 255, 50)
@@ -466,73 +468,94 @@ local function SetButtonState(btn, state)
 end
 
 --------------------------------------------------------
--- AIMBOT + KEY SELECT
+-- AIMBOT
 --------------------------------------------------------
 local aimbotEnabled = false
+local holdKey = Enum.KeyCode.F
 local keyHeld = false
 
-local holdKey = Enum.KeyCode.F
-keyButton.Text = "F"  -- mặc định
+-- Chế độ đợi nhận key
+local waitingKey = false
 
-local selectingKey = false
+-- cập nhật text của nút chọn key
+local function updateKeyText()
+	if typeof(holdKey) == "EnumItem" then
+		keyButton.Text = holdKey.Name
+	else
+		keyButton.Text = tostring(holdKey)
+	end
+end
 
--- Bật / tắt Aimbot
+updateKeyText()
 SetButtonState(btnAimbot, false)
+
+-- bật tắt aimbot
 btnAimbot.MouseButton1Click:Connect(function()
 	aimbotEnabled = not aimbotEnabled
 	SetButtonState(btnAimbot, aimbotEnabled)
 end)
 
--- Bấm vào nút đổi key
+-- Bấm nút chọn key => bật chế độ chờ nhận phím
 keyButton.MouseButton1Click:Connect(function()
-	if selectingKey then
-		selectingKey = false
-		keyButton.Text = holdKey.Name
-	else
-		selectingKey = true
+	waitingKey = not waitingKey
+	if waitingKey then
 		keyButton.Text = "..."
+	else
+		updateKeyText()
 	end
 end)
 
--- Nhận phím
-UserInputService.InputBegan:Connect(function(input)
-	if selectingKey then
-		-- Nhận chuột
-		if input.UserInputType == Enum.UserInputType.MouseButton1 then
-			holdKey = Enum.UserInputType.MouseButton1
-			keyButton.Text = "LMB"
-			selectingKey = false
-			return
-		end
-		if input.UserInputType == Enum.UserInputType.MouseButton2 then
-			holdKey = Enum.UserInputType.MouseButton2
-			keyButton.Text = "RMB"
-			selectingKey = false
-			return
-		end
+-- Nhận phím mới
+UserInputService.InputBegan:Connect(function(input, gpe)
+	if not waitingKey then return end
+	if gpe then return end
 
-		-- Nhận phím bàn phím
-		if input.KeyCode ~= Enum.KeyCode.Unknown then
-			holdKey = input.KeyCode
-			keyButton.Text = input.KeyCode.Name
-			selectingKey = false
-		end
-
+	-- Nhận bàn phím
+	if input.UserInputType == Enum.UserInputType.Keyboard then
+		holdKey = input.KeyCode
+		waitingKey = false
+		updateKeyText()
 		return
 	end
 
-	-- Giữ phím để aimbot hoạt động
-	if input.KeyCode == holdKey or input.UserInputType == holdKey then
+	-- Nhận chuột trái/phải
+	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		holdKey = "Mouse1"
+		waitingKey = false
+		keyButton.Text = "Mouse1"
+		return
+	end
+
+	if input.UserInputType == Enum.UserInputType.MouseButton2 then
+		holdKey = "Mouse2"
+		waitingKey = false
+		keyButton.Text = "Mouse2"
+		return
+	end
+end)
+
+-- giữ key
+UserInputService.InputBegan:Connect(function(input)
+	if typeof(holdKey) == "EnumItem" and input.KeyCode == holdKey then
+		keyHeld = true
+	elseif holdKey == "Mouse1" and input.UserInputType == Enum.UserInputType.MouseButton1 then
+		keyHeld = true
+	elseif holdKey == "Mouse2" and input.UserInputType == Enum.UserInputType.MouseButton2 then
 		keyHeld = true
 	end
 end)
 
 UserInputService.InputEnded:Connect(function(input)
-	if input.KeyCode == holdKey or input.UserInputType == holdKey then
+	if typeof(holdKey) == "EnumItem" and input.KeyCode == holdKey then
+		keyHeld = false
+	elseif holdKey == "Mouse1" and input.UserInputType == Enum.UserInputType.MouseButton1 then
+		keyHeld = false
+	elseif holdKey == "Mouse2" and input.UserInputType == Enum.UserInputType.MouseButton2 then
 		keyHeld = false
 	end
 end)
 
+-- Lấy zombie gần tâm màn hình
 local function getClosestZombie()
 	local best, bestDist = nil, math.huge
 	local center = Vector2.new(Camera.ViewportSize.X/2, Camera.ViewportSize.Y/2)
@@ -542,7 +565,7 @@ local function getClosestZombie()
 		if head then
 			local p, vis = Camera:WorldToViewportPoint(head.Position)
 			if vis then
-				local dist = (Vector2.new(p.X, p.Y) - center).Magnitude
+				local dist = (Vector2.new(p.X,p.Y) - center).Magnitude
 				if dist < bestDist and dist <= 200 then
 					bestDist = dist
 					best = head
@@ -554,6 +577,7 @@ local function getClosestZombie()
 	return best
 end
 
+-- Aimbot hoạt động
 RunService.RenderStepped:Connect(function()
 	if aimbotEnabled and keyHeld then
 		local head = getClosestZombie()
@@ -604,7 +628,8 @@ UserInputService.JumpRequest:Connect(function()
 	if jumpEnabled then
 		local hum = player.Character and player.Character:FindFirstChild("Humanoid")
 		if hum then
-			hum.JumpPower = tonumber(boxJump.Text) or 50
+			local jp = tonumber(boxJump.Text) or 50
+			hum.JumpPower = jp
 			hum:ChangeState(Enum.HumanoidStateType.Jumping)
 		end
 	end
