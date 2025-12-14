@@ -1,9 +1,3 @@
-game.StarterGui:SetCore("SendNotification", {
-    Title = "Created by HAPPY script";
-    Text = "Zombie stories🧟";
-    Duration = 7;
-})
-
 local ZombieStoriesScript = Instance.new("ScreenGui")
 ZombieStoriesScript.Name = "ZombieStoriesScript"
 ZombieStoriesScript.ResetOnSpawn = false
@@ -18,7 +12,7 @@ Main.BackgroundColor3 = Color3.new(0.301961, 0.329412, 0.509804)
 Main.BorderSizePixel = 0
 Main.BorderColor3 = Color3.new(0, 0, 0)
 Main.Visible = false
-Main.ZIndex = 9998
+Main.ZIndex = 9995
 Main.AnchorPoint = Vector2.new(0.5, 0.5)
 Main.Parent = ZombieStoriesScript
 
@@ -57,7 +51,7 @@ Aimbot.Size = UDim2.new(0.2, 0, 0.15, 0)
 Aimbot.BackgroundColor3 = Color3.new(1, 0.196078, 0.196078)
 Aimbot.BorderSizePixel = 0
 Aimbot.BorderColor3 = Color3.new(0, 0, 0)
-Aimbot.ZIndex = 9999
+Aimbot.ZIndex = 9996
 Aimbot.Text = "OFF"
 Aimbot.TextColor3 = Color3.new(1, 1, 1)
 Aimbot.TextSize = 14
@@ -71,29 +65,51 @@ UICorner2.Name = "UICorner"
 UICorner2.CornerRadius = UDim.new(0.1, 0)
 UICorner2.Parent = Aimbot
 
-local TextButton = Instance.new("TextButton")
-TextButton.Name = "KeyButton"
-TextButton.Position = UDim2.new(0.5, 0, 1.55, 0)
-TextButton.Size = UDim2.new(0.85, 0, 1, 0)
-TextButton.BackgroundColor3 = Color3.new(0.784314, 0, 1)
-TextButton.BackgroundTransparency = 0.5
-TextButton.BorderSizePixel = 0
-TextButton.BorderColor3 = Color3.new(0, 0, 0)
-TextButton.ZIndex = 9999
-TextButton.AnchorPoint = Vector2.new(0.5, 0.5)
-TextButton.Transparency = 0.5
-TextButton.Text = "F"
-TextButton.TextColor3 = Color3.new(0.784314, 0, 1)
-TextButton.TextSize = 14
-TextButton.FontFace = Font.new("rbxassetid://12187360881", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
-TextButton.TextScaled = true
-TextButton.TextWrapped = true
-TextButton.Parent = Aimbot
+local KeyButton = Instance.new("TextButton")
+KeyButton.Name = "KeyButton"
+KeyButton.Position = UDim2.new(0.075, 0, 1.55, 0)
+KeyButton.Size = UDim2.new(0.85, 0, 1, 0)
+KeyButton.BackgroundColor3 = Color3.new(0.784314, 0, 1)
+KeyButton.BackgroundTransparency = 0.5
+KeyButton.BorderSizePixel = 0
+KeyButton.BorderColor3 = Color3.new(0, 0, 0)
+KeyButton.ZIndex = 9999
+KeyButton.AnchorPoint = Vector2.new(0.5, 0.5)
+KeyButton.Transparency = 0.5
+KeyButton.Text = "F"
+KeyButton.TextColor3 = Color3.new(0.784314, 0, 1)
+KeyButton.TextSize = 14
+KeyButton.FontFace = Font.new("rbxassetid://12187360881", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+KeyButton.TextScaled = true
+KeyButton.TextWrapped = true
+KeyButton.Parent = Aimbot
 
 local UICorner3 = Instance.new("UICorner")
 UICorner3.Name = "UICorner"
 UICorner3.CornerRadius = UDim.new(0.1, 0)
-UICorner3.Parent = TextButton
+UICorner3.Parent = KeyButton
+
+local AutoShoot = Instance.new("TextButton")
+AutoShoot.Name = "AutoShoot"
+AutoShoot.Position = UDim2.new(0.925, 0, 1.55, 0)
+AutoShoot.Size = UDim2.new(0.85, 0, 1, 0)
+AutoShoot.BackgroundColor3 = Color3.new(1, 0.196078, 0.196078)
+AutoShoot.BorderSizePixel = 0
+AutoShoot.BorderColor3 = Color3.new(0, 0, 0)
+AutoShoot.ZIndex = 9999
+AutoShoot.AnchorPoint = Vector2.new(0.5, 0.5)
+AutoShoot.Text = "Auto shoot: OFF"
+AutoShoot.TextColor3 = Color3.new(1, 1, 1)
+AutoShoot.TextSize = 14
+AutoShoot.FontFace = Font.new("rbxassetid://12187360881", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+AutoShoot.TextScaled = true
+AutoShoot.TextWrapped = true
+AutoShoot.Parent = Aimbot
+
+local UICorner4 = Instance.new("UICorner")
+UICorner4.Name = "UICorner"
+UICorner4.CornerRadius = UDim.new(0.1, 0)
+UICorner4.Parent = AutoShoot
 
 local Title = Instance.new("ImageLabel")
 Title.Name = "Title"
@@ -103,7 +119,7 @@ Title.BackgroundColor3 = Color3.new(1, 1, 1)
 Title.BackgroundTransparency = 1
 Title.BorderSizePixel = 0
 Title.BorderColor3 = Color3.new(0, 0, 0)
-Title.ZIndex = 9999
+Title.ZIndex = 9996
 Title.AnchorPoint = Vector2.new(0.5, 0.5)
 Title.Transparency = 1
 Title.Image = "rbxassetid://96781088301393"
@@ -117,7 +133,7 @@ Zombie.BackgroundColor3 = Color3.new(1, 1, 1)
 Zombie.BackgroundTransparency = 1
 Zombie.BorderSizePixel = 0
 Zombie.BorderColor3 = Color3.new(0, 0, 0)
-Zombie.ZIndex = 9999
+Zombie.ZIndex = 9996
 Zombie.Transparency = 1
 Zombie.Image = "rbxassetid://71697485431443"
 Zombie.Parent = Main
@@ -150,7 +166,7 @@ SpeedPlayer.BackgroundColor3 = Color3.new(1, 1, 1)
 SpeedPlayer.BackgroundTransparency = 1
 SpeedPlayer.BorderSizePixel = 0
 SpeedPlayer.BorderColor3 = Color3.new(0, 0, 0)
-SpeedPlayer.ZIndex = 9999
+SpeedPlayer.ZIndex = 9996
 SpeedPlayer.Transparency = 1
 SpeedPlayer.Image = "rbxassetid://112279145639007"
 SpeedPlayer.Parent = Main
@@ -167,7 +183,7 @@ Speed.Size = UDim2.new(0.2, 0, 0.15, 0)
 Speed.BackgroundColor3 = Color3.new(1, 0.196078, 0.196078)
 Speed.BorderSizePixel = 0
 Speed.BorderColor3 = Color3.new(0, 0, 0)
-Speed.ZIndex = 9999
+Speed.ZIndex = 9996
 Speed.Text = "OFF"
 Speed.TextColor3 = Color3.new(1, 1, 1)
 Speed.TextSize = 14
@@ -176,10 +192,10 @@ Speed.TextScaled = true
 Speed.TextWrapped = true
 Speed.Parent = Main
 
-local UICorner4 = Instance.new("UICorner")
-UICorner4.Name = "UICorner"
-UICorner4.CornerRadius = UDim.new(0.1, 0)
-UICorner4.Parent = Speed
+local UICorner5 = Instance.new("UICorner")
+UICorner5.Name = "UICorner"
+UICorner5.CornerRadius = UDim.new(0.1, 0)
+UICorner5.Parent = Speed
 
 local TextBox = Instance.new("TextBox")
 TextBox.Name = "TextBox"
@@ -202,10 +218,10 @@ TextBox.PlaceholderText = "Value"
 TextBox.PlaceholderColor3 = Color3.new(0.784314, 0, 1)
 TextBox.Parent = Speed
 
-local UICorner5 = Instance.new("UICorner")
-UICorner5.Name = "UICorner"
-UICorner5.CornerRadius = UDim.new(0.1, 0)
-UICorner5.Parent = TextBox
+local UICorner6 = Instance.new("UICorner")
+UICorner6.Name = "UICorner"
+UICorner6.CornerRadius = UDim.new(0.1, 0)
+UICorner6.Parent = TextBox
 
 local JumpPlayer = Instance.new("ImageLabel")
 JumpPlayer.Name = "JumpPlayer"
@@ -215,7 +231,7 @@ JumpPlayer.BackgroundColor3 = Color3.new(1, 1, 1)
 JumpPlayer.BackgroundTransparency = 1
 JumpPlayer.BorderSizePixel = 0
 JumpPlayer.BorderColor3 = Color3.new(0, 0, 0)
-JumpPlayer.ZIndex = 9999
+JumpPlayer.ZIndex = 9996
 JumpPlayer.Transparency = 1
 JumpPlayer.Image = "rbxassetid://91040894780578"
 JumpPlayer.Parent = Main
@@ -252,7 +268,7 @@ IfnJump.Size = UDim2.new(0.2, 0, 0.15, 0)
 IfnJump.BackgroundColor3 = Color3.new(1, 0.196078, 0.196078)
 IfnJump.BorderSizePixel = 0
 IfnJump.BorderColor3 = Color3.new(0, 0, 0)
-IfnJump.ZIndex = 9999
+IfnJump.ZIndex = 9996
 IfnJump.Text = "OFF"
 IfnJump.TextColor3 = Color3.new(1, 1, 1)
 IfnJump.TextSize = 14
@@ -261,10 +277,10 @@ IfnJump.TextScaled = true
 IfnJump.TextWrapped = true
 IfnJump.Parent = Main
 
-local UICorner6 = Instance.new("UICorner")
-UICorner6.Name = "UICorner"
-UICorner6.CornerRadius = UDim.new(0.1, 0)
-UICorner6.Parent = IfnJump
+local UICorner7 = Instance.new("UICorner")
+UICorner7.Name = "UICorner"
+UICorner7.CornerRadius = UDim.new(0.1, 0)
+UICorner7.Parent = IfnJump
 
 local TextBox2 = Instance.new("TextBox")
 TextBox2.Name = "TextBox"
@@ -287,10 +303,10 @@ TextBox2.PlaceholderText = "Value"
 TextBox2.PlaceholderColor3 = Color3.new(0.784314, 0, 1)
 TextBox2.Parent = IfnJump
 
-local UICorner7 = Instance.new("UICorner")
-UICorner7.Name = "UICorner"
-UICorner7.CornerRadius = UDim.new(0.1, 0)
-UICorner7.Parent = TextBox2
+local UICorner8 = Instance.new("UICorner")
+UICorner8.Name = "UICorner"
+UICorner8.CornerRadius = UDim.new(0.1, 0)
+UICorner8.Parent = TextBox2
 
 local Button = Instance.new("ImageButton")
 Button.Name = "Button"
@@ -340,6 +356,9 @@ local btnSpeed = main:WaitForChild("Speed")
 local boxSpeed = btnSpeed:WaitForChild("TextBox")
 local btnJump = main:WaitForChild("IfnJump")
 local boxJump = btnJump:WaitForChild("TextBox")
+
+-- *** AutoShoot button (bạn đã thêm vào GUI theo mô tả) ***
+local btnAutoShoot = btnAimbot:WaitForChild("AutoShoot") -- Text: "Auto shoot: OFF" và BackColor đỏ ban đầu
 
 --------------------------------------------------------
 -- TWEEN MENU
@@ -467,6 +486,17 @@ local function SetButtonState(btn, state)
 	end
 end
 
+-- riêng cho AutoShoot (giữ text mô tả)
+local function SetAutoShootButton(btn, state)
+	if state then
+		btn.BackgroundColor3 = ON_COLOR
+		btn.Text = "Auto shoot: ON"
+	else
+		btn.BackgroundColor3 = OFF_COLOR
+		btn.Text = "Auto shoot: OFF"
+	end
+end
+
 --------------------------------------------------------
 -- AIMBOT
 --------------------------------------------------------
@@ -488,11 +518,20 @@ end
 
 updateKeyText()
 SetButtonState(btnAimbot, false)
+-- khởi tạo AutoShoot trạng thái
+local autoShootEnabled = false
+SetAutoShootButton(btnAutoShoot, false)
 
 -- bật tắt aimbot
 btnAimbot.MouseButton1Click:Connect(function()
 	aimbotEnabled = not aimbotEnabled
 	SetButtonState(btnAimbot, aimbotEnabled)
+end)
+
+-- AutoShoot toggle (nút bạn đã tạo)
+btnAutoShoot.MouseButton1Click:Connect(function()
+	autoShootEnabled = not autoShootEnabled
+	SetAutoShootButton(btnAutoShoot, autoShootEnabled)
 end)
 
 -- Bấm nút chọn key => bật chế độ chờ nhận phím
@@ -555,34 +594,159 @@ UserInputService.InputEnded:Connect(function(input)
 	end
 end)
 
--- Lấy zombie gần tâm màn hình
-local function getClosestZombie()
-	local best, bestDist = nil, math.huge
+-- Lấy zombie tốt nhất (ưu tiên gần world distance, tiebreak bằng screen distance)
+local function getBestZombie()
+	local zombiesFolder = workspace:FindFirstChild("Zombies")
+	if not zombiesFolder then return nil end
+
+	local camPos = Camera.CFrame.Position
 	local center = Vector2.new(Camera.ViewportSize.X/2, Camera.ViewportSize.Y/2)
 
-	for _, z in pairs(workspace:WaitForChild("Zombies"):GetChildren()) do
-		local head = z:FindFirstChild("Head")
-		if head then
-			local p, vis = Camera:WorldToViewportPoint(head.Position)
-			if vis then
-				local dist = (Vector2.new(p.X,p.Y) - center).Magnitude
-				if dist < bestDist and dist <= 200 then
-					bestDist = dist
-					best = head
+	local bestModel = nil
+	local bestScore = math.huge
+
+	for _, z in ipairs(zombiesFolder:GetChildren()) do
+		if z:IsA("Model") then
+			local head = z:FindFirstChild("Head")
+			if head then
+				local worldDist = (head.Position - camPos).Magnitude
+				if worldDist <= 1000 then
+					local vp = Camera:WorldToViewportPoint(head.Position)
+					if vp.Z > 0 then
+						local screenDist = (Vector2.new(vp.X, vp.Y) - center).Magnitude
+						local score = worldDist + screenDist * 0.25
+						if score < bestScore then
+							bestScore = score
+							bestModel = z
+						end
+					end
 				end
 			end
 		end
 	end
 
-	return best
+	return bestModel
 end
 
--- Aimbot hoạt động
+-- Aimbot hoạt động (aim vào root part của model)
 RunService.RenderStepped:Connect(function()
 	if aimbotEnabled and keyHeld then
-		local head = getClosestZombie()
-		if head then
-			Camera.CFrame = CFrame.new(Camera.CFrame.Position, head.Position)
+		local zombie = getBestZombie()
+		if zombie then
+			local head = zombie:FindFirstChild("Head")
+			if head then
+				Camera.CFrame = CFrame.new(
+					Camera.CFrame.Position,
+					head.Position
+				)
+			end
+		end
+	end
+end)
+
+-- ==========================
+-- AUTO SHOOT (raycast visibility check)
+-- ==========================
+local shooting = false
+local vim
+pcall(function() vim = game:GetService("VirtualInputManager") end)
+
+-- reuse RaycastParams to reduce overhead
+local rayParams = RaycastParams.new()
+rayParams.FilterType = Enum.RaycastFilterType.Blacklist
+
+local function isZombieVisible(zombieModel)
+	if not zombieModel or not Camera then return false end
+
+	local head = zombieModel:FindFirstChild("Head")
+	if not head then return false end
+
+	rayParams.FilterDescendantsInstances = { player.Character }
+
+	local origin = Camera.CFrame.Position
+	local dir = head.Position - origin
+	if dir.Magnitude < 0.1 then return true end
+
+	local result = workspace:Raycast(
+		origin,
+		dir,
+		rayParams
+	)
+
+	-- không trúng gì → thấy rõ
+	if not result then
+		return true
+	end
+
+	-- trúng part thuộc zombie → thấy rõ
+	if result.Instance:IsDescendantOf(zombieModel) then
+		return true
+	end
+
+	-- bị che bởi vật khác
+	return false
+end
+
+task.spawn(function()
+	while true do
+		-- auto-shoot only if enabled + user holding aimbot key + aimbot feature ON
+		if autoShootEnabled and aimbotEnabled and keyHeld then
+			local targetModel = getBestZombie()
+			if targetModel then
+				local ok, vis = pcall(isZombieVisible, targetModel)
+				local visible = ok and vis
+
+				if visible then
+					-- press/hold mouse (mobile: click down/up rapidly)
+					if UserInputService.TouchEnabled then
+						if vim then
+							pcall(function()
+								vim:SendMouseButtonEvent(0, 0, 0, true, game, 0)
+								vim:SendMouseButtonEvent(0, 0, 0, false, game, 0)
+							end)
+						end
+						task.wait(0.025)
+					else
+						-- PC: hold mouse down (if not already)
+						if not shooting then
+							if vim then
+								pcall(function()
+									vim:SendMouseButtonEvent(0, 0, 0, true, game, 0)
+								end)
+								shooting = true
+							end
+						end
+						task.wait(0.025)
+					end
+				else
+					-- target blocked -> release mouse if held
+					if shooting and vim then
+						pcall(function()
+							vim:SendMouseButtonEvent(0, 0, 0, false, game, 0)
+						end)
+						shooting = false
+					end
+					task.wait(0.02)
+				end
+			else
+				-- no target -> ensure release
+				if shooting and vim then
+					pcall(function()
+						vim:SendMouseButtonEvent(0, 0, 0, false, game, 0)
+					end)
+					shooting = false
+				end
+				task.wait(0.05)
+			end
+		else
+			-- disabled or not holding -> ensure release
+			if shooting and vim then
+				pcall(function()
+					vim:SendMouseButtonEvent(0, 0, 0, false, game, 0)
+				end)
+				shooting = false
+			end
+			task.wait(0.05)
 		end
 	end
 end)
