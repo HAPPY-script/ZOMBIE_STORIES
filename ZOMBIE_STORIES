@@ -628,24 +628,21 @@ local function getBestZombie()
 	return bestModel
 end
 
--- Aimbot hoạt động (aim vào root part của model)
+-- Aimbot hoạt động (aim vào head của model)
 RunService.RenderStepped:Connect(function()
 	if aimbotEnabled and keyHeld then
 		local zombie = getBestZombie()
 		if zombie then
 			local head = zombie:FindFirstChild("Head")
 			if head then
-				Camera.CFrame = CFrame.new(
-					Camera.CFrame.Position,
-					head.Position
-				)
+				Camera.CFrame = CFrame.new(Camera.CFrame.Position, head.Position)
 			end
 		end
 	end
 end)
 
 -- ==========================
--- AUTO SHOOT (raycast visibility check)
+-- AUTO SHOOT (multi-sample raycast visibility check)
 -- ==========================
 local shooting = false
 local vim
@@ -655,48 +652,103 @@ pcall(function() vim = game:GetService("VirtualInputManager") end)
 local rayParams = RaycastParams.new()
 rayParams.FilterType = Enum.RaycastFilterType.Blacklist
 
-local function isZombieVisible(zombieModel)
+-- multi-sample visibility check:
+-- returns true if ANY sampled ray reaches the head (or hits a part of the zombie)
+local function isZombieVisibleMulti(zombieModel, samples)
 	if not zombieModel or not Camera then return false end
-
 	local head = zombieModel:FindFirstChild("Head")
-	if not head then return false end
+	if not head or not head.Position then return false end
 
-	rayParams.FilterDescendantsInstances = { player.Character }
+	-- build ignore list (player character)
+	local ignore = {}
+	if player and player.Character then
+		table.insert(ignore, player.Character)
+	end
+	rayParams.FilterDescendantsInstances = ignore
 
 	local origin = Camera.CFrame.Position
-	local dir = head.Position - origin
-	if dir.Magnitude < 0.1 then return true end
+	local dirToHead = head.Position - origin
+	local dist = dirToHead.Magnitude
+	if dist <= 0.001 then return true end
 
-	local result = workspace:Raycast(
-		origin,
-		dir,
-		rayParams
-	)
+	-- choose sampling grid (NxN) on plane perpendicular to camera (projected head face)
+	samples = tonumber(samples) or 3
+	if samples < 1 then samples = 1 end
 
-	-- không trúng gì → thấy rõ
-	if not result then
-		return true
+	-- camera basis for sampling (right / up)
+	local camC = Camera.CFrame
+	local right = camC.RightVector
+	local up = camC.UpVector
+
+	-- approximate half extents of head in screen plane:
+	local hx = math.max(0.02, head.Size.X * 0.5)
+	local hy = math.max(0.02, head.Size.Y * 0.5)
+
+	-- sampling radius factor (smaller than full extents to avoid edge misses)
+	local rx = hx * 0.9
+	local ry = hy * 0.9
+
+	-- sample grid centered at head.Position
+	-- iterate rows/cols (odd N includes center)
+	for yi = 0, samples-1 do
+		for xi = 0, samples-1 do
+			-- compute normalized coords in [-0.5, 0.5]
+			local nx = (xi / (samples-1)) - 0.5
+			local ny = (yi / (samples-1)) - 0.5
+
+			-- if samples == 1 then nx,ny = 0,0
+			if samples == 1 then nx, ny = 0, 0 end
+
+			-- target sample point in world space
+			local samplePoint = head.Position + right * (nx * 2 * rx) + up * (ny * 2 * ry)
+
+			-- small forward offset into head to prefer penetrating thin blockers near surface
+			local toward = (samplePoint - origin)
+			local sampleDist = toward.Magnitude
+			if sampleDist <= 0.001 then
+				return true
+			end
+			local dir = toward.Unit * sampleDist
+
+			-- raycast
+			local ok, result = pcall(function()
+				return workspace:Raycast(origin, dir, rayParams)
+			end)
+			if ok then
+				-- nothing hit -> visible
+				if not result then
+					return true
+				end
+				-- hit part belongs to zombie model -> visible
+				if result.Instance and result.Instance:IsDescendantOf(zombieModel) then
+					return true
+				end
+				-- else blocked on this sample; continue to next sample
+			end
+			-- continue sampling
+		end
 	end
 
-	-- trúng part thuộc zombie → thấy rõ
-	if result.Instance:IsDescendantOf(zombieModel) then
-		return true
-	end
-
-	-- bị che bởi vật khác
+	-- all samples blocked -> not visible
 	return false
 end
 
+-- tight loop for fast reaction
 task.spawn(function()
+	-- tune samples / wait timings here for performance vs sensitivity
+	local SAMPLES = 3          -- 3x3 grid (9 rays) -> change to 5 for more sensitivity
+	local CHECK_DELAY_VISIBLE = 0.015  -- when visible, keep firing often
+	local CHECK_DELAY_BLOCKED = 0.02   -- when blocked, check slightly faster
+	local CHECK_DELAY_IDLE = 0.05
+
 	while true do
-		-- auto-shoot only if enabled + user holding aimbot key + aimbot feature ON
 		if autoShootEnabled and aimbotEnabled and keyHeld then
 			local targetModel = getBestZombie()
 			if targetModel then
-				local ok, vis = pcall(isZombieVisible, targetModel)
-				local visible = ok and vis
+				local ok, visible = pcall(isZombieVisibleMulti, targetModel, SAMPLES)
+				local canShoot = ok and visible
 
-				if visible then
+				if canShoot then
 					-- press/hold mouse (mobile: click down/up rapidly)
 					if UserInputService.TouchEnabled then
 						if vim then
@@ -705,7 +757,7 @@ task.spawn(function()
 								vim:SendMouseButtonEvent(0, 0, 0, false, game, 0)
 							end)
 						end
-						task.wait(0.025)
+						task.wait(CHECK_DELAY_VISIBLE)
 					else
 						-- PC: hold mouse down (if not already)
 						if not shooting then
@@ -716,17 +768,18 @@ task.spawn(function()
 								shooting = true
 							end
 						end
-						task.wait(0.025)
+						task.wait(CHECK_DELAY_VISIBLE)
 					end
 				else
-					-- target blocked -> release mouse if held
+					-- blocked -> release mouse if held
 					if shooting and vim then
 						pcall(function()
 							vim:SendMouseButtonEvent(0, 0, 0, false, game, 0)
 						end)
 						shooting = false
 					end
-					task.wait(0.02)
+					-- check quickly to catch small opening
+					task.wait(CHECK_DELAY_BLOCKED)
 				end
 			else
 				-- no target -> ensure release
@@ -736,7 +789,7 @@ task.spawn(function()
 					end)
 					shooting = false
 				end
-				task.wait(0.05)
+				task.wait(CHECK_DELAY_IDLE)
 			end
 		else
 			-- disabled or not holding -> ensure release
