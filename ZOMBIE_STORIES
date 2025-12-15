@@ -1,3 +1,9 @@
+game.StarterGui:SetCore("SendNotification", {
+    Title = "Created by HAPPY script";
+    Text = "Zombie stories🧟";
+    Duration = 7;
+})
+
 local ZombieStoriesScript = Instance.new("ScreenGui")
 ZombieStoriesScript.Name = "ZombieStoriesScript"
 ZombieStoriesScript.ResetOnSpawn = false
